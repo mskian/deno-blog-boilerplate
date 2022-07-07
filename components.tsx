@@ -124,16 +124,16 @@ function PostCard({ post, timezone }: { post: Post; timezone: string }) {
         </a>
       </h3>
       <p class="text-gray-500/80">
-        <PrettyDate date={post.publishDate} timezone={timezone} />
+        Last Updated at&nbsp;-&nbsp;<PrettyDate date={post.publishDate} timezone={timezone} />
       </p>
       <p class="mt-3 text-gray-600 dark:text-gray-400">{post.snippet}</p>
       <p class="mt-3">
         <a
           class="leading-tight text-gray-900 dark:text-gray-100 inline-block border-b-1 border-gray-600 hover:text-gray-500 hover:border-gray-500 transition-colors"
           href={post.pathname}
-          title={`Read "${post.title}"`}
+          title={`மேலும் படிக்க "${post.title}"`}
         >
-          Read More
+          மேலும் படிக்க
         </a>
       </p>
     </div>
@@ -177,13 +177,13 @@ export function PostPage({ post, state }: PostPageProps) {
           />
         )}
         <article>
-          <h1 class="text-4xl text-gray-900 dark:text-gray-100 font-bold">
+          <h1 class="text-3xl text-gray-900 dark:text-gray-100 font-bold">
             {post.title}
           </h1>
           <p class="mt-1 text-gray-500">
             {(state.author || post.author) && (
               <span>By {state.author || post.author} at</span>
-            )} - 
+            )}&nbsp;-&nbsp;
             <PrettyDate date={post.publishDate} timezone={state.timezone} />
           </p>
           <div
