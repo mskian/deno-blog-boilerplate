@@ -290,6 +290,7 @@ export async function handler(
         "og:title": blogState.title,
         "og:description": blogState.description,
         "og:image": blogState.ogImage ?? blogState.cover,
+        "og:image:alt": blogState.title,
         "twitter:title": blogState.title,
         "twitter:description": blogState.description,
         "twitter:image": blogState.ogImage ?? blogState.cover,
@@ -297,6 +298,10 @@ export async function handler(
       },
       links: [
         { href: canonicalUrl, rel: "canonical" },
+        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png", sizes: "32x32" },
+        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-192x192.png", sizes: "192x192"},
+        { rel: "dns-prefetch", href: "https://images.weserv.nl" },
+        { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
       ],
       styles: [
         ...(blogState.style ? [blogState.style] : []),
@@ -322,6 +327,7 @@ export async function handler(
         "og:title": post.title,
         "og:description": post.snippet,
         "og:image": post.ogImage,
+        "og:image:alt": post.title,
         "twitter:title": post.title,
         "twitter:description": post.snippet,
         "twitter:image": post.ogImage,
@@ -334,6 +340,10 @@ export async function handler(
       ],
       links: [
         { href: `${canonicalUrl}${pathname}`, rel: "canonical" },
+        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png" },
+        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-192x192.png", sizes: "192x192"},
+        { rel: "dns-prefetch", href: "https://images.weserv.nl" },
+        { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
       ],
       scripts: IS_DEV ? [{ src: "/hmr.js" }] : undefined,
       body: <PostPage post={post} state={blogState} />,

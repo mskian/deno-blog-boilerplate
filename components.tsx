@@ -53,7 +53,7 @@ export function Index({ state, posts }: IndexProps) {
               />
             )}
             <h1
-              class="mt-3 text-3xl text-gray-900 dark:text-gray-100 font-bold"
+              class="mt-3 text-2xl text-gray-900 dark:text-gray-100 font-bold"
               style={{ color: state.coverTextColor }}
             >
               {state.title ?? "My Blog"}
@@ -155,7 +155,7 @@ export function PostPage({ post, state }: PostPageProps) {
           <a
             href="/"
             class="inline-flex items-center gap-1 text-sm text-gray-500/80 hover:text-gray-700 transition-colors"
-            title="Back to Index Page"
+            title="Back to Home Page"
           >
             <svg
               className="inline-block w-5 h-5"
@@ -167,7 +167,7 @@ export function PostPage({ post, state }: PostPageProps) {
                 fill="currentColor"
               />
             </svg>
-            INDEX
+            Home
           </a>
         </div>
         {post.coverHtml && (
