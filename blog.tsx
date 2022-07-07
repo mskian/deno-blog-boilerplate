@@ -281,7 +281,7 @@ export async function handler(
 <url>
 <loc>https://copied.kavithai.site/</loc>
 <lastmod>${
-      date.toLocaleDateString().replace("/", "-").replace("/", "-")
+      date.toISOString().split('T')[0].replace("/", "-").replace("/", "-")
     }</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.8</priority>
@@ -289,7 +289,7 @@ export async function handler(
 <url>
 <loc>https://copied.kavithai.site/tamil-copied-kavithai</loc>
 <lastmod>${
-      date.toLocaleDateString().replace("/", "-").replace("/", "-")
+      date.toISOString().split('T')[0].replace("/", "-").replace("/", "-")
     }</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.8</priority>
