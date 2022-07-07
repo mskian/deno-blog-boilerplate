@@ -155,7 +155,7 @@ export function PostPage({ post, state }: PostPageProps) {
         <div class="pb-16">
           <a
             href="/"
-            class="inline-flex items-center gap-1 text-sm text-gray-500/80 hover:text-gray-700 transition-colors"
+            class="inline-flex items-center gap-1 text-sm text-green-500/80 hover:text-green-700 transition-colors"
             title="Back to Home Page"
           >
             <svg
@@ -207,13 +207,13 @@ export function PostPage({ post, state }: PostPageProps) {
 function Footer(props: { author?: string }) {
   return (
     <footer class="mt-20 pb-16 lt-sm:pb-8 lt-sm:mt-16">
-      <p class="flex items-center gap-2.5 text-gray-400/800 dark:text-gray-500/800 text-sm">
+      <p class="flex items-center gap-2.5 text-green-400/800 dark:text-green-500/800 text-sm">
         <span>
           &copy; {new Date().getFullYear()} {props.author} &middot; Powered by
           {" "}
           <a
             target="_blank" rel="nofollow noreferrer noopener"
-            class="inline-flex items-center gap-1 underline hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+            class="inline-flex items-center gap-1 underline hover:text-green-800 dark:hover:text-green-200 transition-colors"
             href="https://deno.land/x/blog"
           >
             Deno Blog
@@ -221,7 +221,7 @@ function Footer(props: { author?: string }) {
         </span>
         <a
           href="/feed"
-          class="inline-flex items-center gap-1 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+          class="inline-flex items-center gap-1 hover:text-green-800 dark:hover:text-green-200 transition-colors"
           title="Atom Feed"
         >
           <IconRssFeed /> RSS
