@@ -53,7 +53,7 @@ export function Index({ state, posts }: IndexProps) {
               />
             )}
             <h1
-              class="mt-3 text-4xl text-gray-900 dark:text-gray-100 font-bold"
+              class="mt-3 text-3xl text-gray-900 dark:text-gray-100 font-bold"
               style={{ color: state.coverTextColor }}
             >
               {state.title ?? "My Blog"}
@@ -183,7 +183,7 @@ export function PostPage({ post, state }: PostPageProps) {
           <p class="mt-1 text-gray-500">
             {(state.author || post.author) && (
               <span>By {state.author || post.author} at</span>
-            )}
+            )} - 
             <PrettyDate date={post.publishDate} timezone={state.timezone} />
           </p>
           <div
@@ -211,6 +211,7 @@ function Footer(props: { author?: string }) {
           &copy; {new Date().getFullYear()} {props.author} &middot; Powered by
           {" "}
           <a
+            target="_blank" rel="nofollow noreferrer noopener"
             class="inline-flex items-center gap-1 underline hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
             href="https://deno.land/x/blog"
           >
