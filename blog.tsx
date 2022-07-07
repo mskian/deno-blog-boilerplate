@@ -260,11 +260,62 @@ export async function handler(
     return serveRSS(req, blogState, POSTS);
   }
 
+  if (pathname === "/robots.txt") {
+    const getRobots =
+      `User-agent: * \nSitemap: https://copied.kavithai.site/sitemap.xml\nDisallow: /ghost/\nDisallow: /p/\nDisallow: /email/`;
+    return new Response(getRobots, {
+      headers: {
+        "content-type": "text/plain; charset=UTF-8",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Content-Type-Options": "nosniff",
+        "Strict-Transport-Security": "max-age=63072000",
+      },
+    });
+  }
+
+  if (pathname === "/sitemap.xml") {
+    let date: Date = new Date();
+    const getSitemap = `
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url>
+<loc>https://copied.kavithai.site/</loc>
+<lastmod>${
+      date.toLocaleDateString().replace("/", "-").replace("/", "-")
+    }</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://copied.kavithai.site/tamil-copied-kavithai</loc>
+<lastmod>${
+      date.toLocaleDateString().replace("/", "-").replace("/", "-")
+    }</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.8</priority>
+</url>
+</urlset>
+    `;
+    return new Response(getSitemap, {
+      headers: {
+        "content-type": "application/xml; charset=utf-8",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Content-Type-Options": "nosniff",
+        "Strict-Transport-Security": "max-age=63072000",
+      },
+    });
+  }
+
   if (IS_DEV) {
     if (pathname == "/hmr.js") {
       return new Response(HMR_CLIENT, {
         headers: {
           "content-type": "application/javascript",
+          "X-Frame-Options": "DENY",
+          "X-XSS-Protection": "1; mode=block",
+          "X-Content-Type-Options": "nosniff",
+          "Strict-Transport-Security": "max-age=63072000",
         },
       });
     }
@@ -298,8 +349,18 @@ export async function handler(
       },
       links: [
         { href: canonicalUrl, rel: "canonical" },
-        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png", sizes: "32x32" },
-        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-192x192.png", sizes: "192x192"},
+        {
+          rel: "icon",
+          href:
+            "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png",
+          sizes: "32x32",
+        },
+        {
+          rel: "icon",
+          href:
+            "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-192x192.png",
+          sizes: "192x192",
+        },
         { rel: "dns-prefetch", href: "https://images.weserv.nl" },
         { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
       ],
@@ -313,6 +374,12 @@ export async function handler(
           posts={POSTS}
         />
       ),
+      headers: {
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Content-Type-Options": "nosniff",
+        "Strict-Transport-Security": "max-age=63072000",
+      },
     });
   }
 
@@ -340,13 +407,28 @@ export async function handler(
       ],
       links: [
         { href: `${canonicalUrl}${pathname}`, rel: "canonical" },
-        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png" },
-        { rel: "icon", href: "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-192x192.png", sizes: "192x192"},
+        {
+          rel: "icon",
+          href:
+            "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png",
+        },
+        {
+          rel: "icon",
+          href:
+            "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-192x192.png",
+          sizes: "192x192",
+        },
         { rel: "dns-prefetch", href: "https://images.weserv.nl" },
         { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
       ],
       scripts: IS_DEV ? [{ src: "/hmr.js" }] : undefined,
       body: <PostPage post={post} state={blogState} />,
+      headers: {
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Content-Type-Options": "nosniff",
+        "Strict-Transport-Security": "max-age=63072000",
+      },
     });
   }
 
@@ -410,6 +492,10 @@ function serveRSS(
   return new Response(atomFeed, {
     headers: {
       "content-type": "application/atom+xml; charset=utf-8",
+      "X-Frame-Options": "DENY",
+      "X-XSS-Protection": "1; mode=block",
+      "X-Content-Type-Options": "nosniff",
+      "Strict-Transport-Security": "max-age=63072000",
     },
   });
 }
