@@ -368,6 +368,7 @@ export async function handler(
         },
         { rel: "dns-prefetch", href: "https://images.weserv.nl" },
         { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
+        { rel: "dns-prefetch", href: "https://hulu.sanweb.info" },
       ],
       styles: [
         ...(blogState.style ? [blogState.style] : []),
@@ -425,6 +426,7 @@ export async function handler(
         },
         { rel: "dns-prefetch", href: "https://images.weserv.nl" },
         { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
+        { rel: "dns-prefetch", href: "https://hulu.sanweb.info" },
       ],
       scripts: IS_DEV ? [{ src: "/hmr.js" }] : undefined,
       body: <PostPage post={post} state={blogState} />,

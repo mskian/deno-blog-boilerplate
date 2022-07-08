@@ -30,7 +30,35 @@ export function Index({ state, posts }: IndexProps) {
   postIndex.sort(
     (a, b) => (b.publishDate?.getTime() ?? 0) - (a.publishDate?.getTime() ?? 0),
   );
-
+  const schemaHome = `<script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Copied Kavithai - Kavithai Database",
+          "url": "https://copied.kavithai.site/",
+          "logo": {
+              "@type": "ImageObject",
+              "url": "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/Icon-60.png",
+              "width": 60,
+              "height": 60
+          }
+      },
+      "url": "https://copied.kavithai.site/",
+      "image": {
+          "@type": "ImageObject",
+          "url": "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2022/06/tamil-kavithai-database.png",
+          "width": 1200,
+          "height": 630
+      },
+      "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://copied.kavithai.site/"
+      },
+      "description": "Kavithai Storage Blog - Copied Kavithai From Tamil Kavithai Sites, Facebook Profiles, and Twitter Profiles - Tamil Kavithai and Tamil Quotes Status."
+  }
+      </script>`;
   return (
     <>
       {state.header || (
@@ -40,6 +68,7 @@ export function Index({ state, posts }: IndexProps) {
             backgroundImage: state.cover ? `url(${state.cover})` : undefined,
           }}
         >
+          <span dangerouslySetInnerHTML={{ __html: schemaHome }} />
           <div class="max-w-screen-sm h-full px-6 mx-auto flex flex-col items-center justify-center">
             {state.avatar && (
               <div
@@ -152,10 +181,69 @@ interface PostPageProps {
 
 export function PostPage({ post, state }: PostPageProps) {
   const html = gfm.render(post.markdown);
+  const schemaMData = `<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Copied Kavithai - Kavithai Database",
+            "url": "https://copied.kavithai.site/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/Icon-60.png",
+                "width": 60,
+                "height": 60
+            }
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Editorial Staff",
+            "image": {
+                "@type": "ImageObject",
+                "url": "//www.gravatar.com/avatar/a3425a2c334972ab5dde3c218307cbdd?s=250&d=mm&r=x",
+                "width": 250,
+                "height": 250
+            },
+            "url": "https://copied.kavithai.site/",
+            "sameAs": [
+                "https://www.facebook.com/tamilsmsblog",
+                "https://twitter.com/tamilsmsblog"
+            ]
+        },
+        "headline": "${post.title}",
+        "url": "https://copied.kavithai.site${post.pathname}",
+        "datePublished": "${
+    post.publishDate.toISOString().split("T")[0].replace("/", "-").replace(
+      "/",
+      "-",
+    )
+  }",
+        "dateModified": "${
+    post.publishDate.toISOString().split("T")[0].replace("/", "-").replace(
+      "/",
+      "-",
+    )
+  }",
+        "image": {
+            "@type": "ImageObject",
+            "url": "${post.ogImage}",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "${post.tags}",
+        "description": "${post.description}",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://copied.kavithai.site/"
+        }
+    }
+        </script>`;
   return (
     <Fragment>
       {state.showHeaderOnPostPage && state.header}
       <div class="max-w-screen-sm px-6 pt-8 mx-auto">
+        <span dangerouslySetInnerHTML={{ __html: schemaMData }} />
         <div class="pb-16">
           <a
             href="/"
@@ -213,6 +301,8 @@ export function PostPage({ post, state }: PostPageProps) {
 }
 
 function Footer(props: { author?: string }) {
+  const umami =
+    `<script async defer data-website-id="71cc8b3a-2de0-45ea-a970-8f80e9da9083" data-domains="copied.kavithai.site" src="https://hulu.sanweb.info/script.js"></script>`;
   return (
     <footer class="mt-20 pb-16 lt-sm:pb-8 lt-sm:mt-16">
       <p class="flex items-center gap-2.5 text-green-400/800 dark:text-green-500/800 text-sm">
@@ -223,7 +313,7 @@ function Footer(props: { author?: string }) {
             target="_blank"
             rel="nofollow noreferrer noopener"
             class="inline-flex items-center gap-1 underline hover:text-green-800 dark:hover:text-green-200 transition-colors"
-            href="https://deno.land/x/blog"
+            href="https://github.com/mskian/deno-blog-boilerplate"
           >
             Deno Blog
           </a>
@@ -236,6 +326,7 @@ function Footer(props: { author?: string }) {
           <IconRssFeed /> RSS
         </a>
       </p>
+      <span dangerouslySetInnerHTML={{ __html: umami }} />
     </footer>
   );
 }
