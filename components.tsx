@@ -60,7 +60,7 @@ export function Index({ state, posts }: IndexProps) {
             </h1>
             {state.description && (
               <p
-                class="text-lg text-gray-600 dark:text-gray-400"
+                class="text-lg text-white-600 dark:text-white-400"
                 style={{ color: state.coverTextColor }}
               >
                 {state.description}
@@ -84,7 +84,8 @@ export function Index({ state, posts }: IndexProps) {
 
                   return (
                     <a
-                      target="_blank" rel="nofollow noreferrer noopener"
+                      target="_blank"
+                      rel="nofollow noreferrer noopener"
                       class="relative flex items-center justify-center w-8 h-8 rounded-full bg-yellow-600/10 dark:bg-yellow-400/10 text-gray-700 dark:text-gray-400 hover:bg-yellow-600/15 dark:hover:bg-yellow-400/15 hover:text-black dark:hover:text-white transition-colors group"
                       href={link.url}
                     >
@@ -125,7 +126,10 @@ function PostCard({ post, timezone }: { post: Post; timezone: string }) {
         </a>
       </h3>
       <p class="text-gray-500/80">
-        Last Updated at&nbsp;-&nbsp;<PrettyDate date={post.publishDate} timezone={timezone} />
+        Last Updated at&nbsp;-&nbsp;<PrettyDate
+          date={post.publishDate}
+          timezone={timezone}
+        />
       </p>
       <p class="mt-3 text-gray-600 dark:text-gray-400">{post.snippet}</p>
       <p class="mt-3">
@@ -185,7 +189,11 @@ export function PostPage({ post, state }: PostPageProps) {
             {(state.author || post.author) && (
               <span>By {state.author || post.author} at</span>
             )}&nbsp;-&nbsp;
-            <PrettyDate date={post.publishDate} timezone={state.timezone} />
+            <PrettyDate
+              date={post.publishDate}
+              timezone={state.timezone}
+            />&nbsp;
+            <Tags tags={post.tags} />
           </p>
           <div
             class="mt-8 markdown-body"
@@ -212,7 +220,8 @@ function Footer(props: { author?: string }) {
           &copy; {new Date().getFullYear()} {props.author} &middot; Powered by
           {" "}
           <a
-            target="_blank" rel="nofollow noreferrer noopener"
+            target="_blank"
+            rel="nofollow noreferrer noopener"
             class="inline-flex items-center gap-1 underline hover:text-green-800 dark:hover:text-green-200 transition-colors"
             href="https://deno.land/x/blog"
           >
@@ -262,6 +271,20 @@ function Tooltip({ children }: { children: string }) {
 function PrettyDate({ date, timezone }: { date: Date; timezone?: string }) {
   const formatted = date.toLocaleDateString(timezone ?? "en-US");
   return <time dateTime={date.toISOString()}>{formatted}</time>;
+}
+
+function Tags({ tags }: { tags?: string[] }) {
+  return tags && tags.length > 0
+    ? (
+      <section class="flex gap-x-2 flex-wrap">
+        {tags?.map((tag) => (
+          <a class="text-pink-500 font-medium" href={`/?tag=${tag}`}>
+            #{tag}
+          </a>
+        ))}
+      </section>
+    )
+    : null;
 }
 
 function IconRssFeed() {

@@ -93,7 +93,7 @@ function hmrSocket(callback) {
  * ```
  */
 export default async function blog(settings?: BlogSettings) {
-  html.use(UnoCSS(settings.unocss)); // Load custom unocss module if provided
+  html.use(UnoCSS(settings?.unocss)); // Load custom unocss module if provided
 
   const url = callsites()[1].getFileName()!;
   const blogState = await configureBlog(url, IS_DEV, settings);
@@ -216,13 +216,17 @@ async function loadPost(postsDirectory: string, path: string) {
   // Remove .md extension.
   pathname = pathname.slice(0, -3);
 
-  const { content, data } = frontMatter(contents) as {
-    data: Record<string, string>;
+  const { content, data: _data } = frontMatter(contents) as {
+    data: Record<string, string | string[] | Date>;
     content: string;
   };
 
-  let snippet = data.snippet ?? data.abstract ?? data.summary ??
-    data.description;
+  const data = recordGetter(_data);
+
+  let snippet: string | undefined = data.get("snippet") ??
+    data.get("abstract") ??
+    data.get("summary") ??
+    data.get("description");
   if (!snippet) {
     const maybeSnippet = content.split("\n\n")[0];
     if (maybeSnippet) {
@@ -233,16 +237,17 @@ async function loadPost(postsDirectory: string, path: string) {
   }
 
   const post: Post = {
-    title: data.title ?? "Untitled",
-    author: data.author,
+    title: data.get("title") ?? "Copied Kavithai",
+    author: data.get("author"),
     // Note: users can override path of a blog post using
     // pathname in front matter.
-    pathname: data.pathname ?? pathname,
-    publishDate: new Date(data.publish_date),
+    pathname: data.get("pathname") ?? pathname,
+    publishDate: data.get("publish_date")!,
     snippet,
     markdown: content,
-    coverHtml: data.cover_html,
-    ogImage: data["og:image"],
+    coverHtml: data.get("cover_html"),
+    ogImage: data.get("og:image"),
+    tags: data.get("tags"),
   };
   POSTS.set(pathname, post);
   console.log("Load: ", post.pathname);
@@ -253,7 +258,7 @@ export async function handler(
   ctx: BlogContext,
 ) {
   const { state: blogState } = ctx;
-  const { pathname } = new URL(req.url);
+  const { pathname, searchParams } = new URL(req.url);
   const canonicalUrl = blogState.canonicalUrl || new URL(req.url).origin;
 
   if (pathname === "/feed") {
@@ -281,7 +286,7 @@ export async function handler(
 <url>
 <loc>https://copied.kavithai.site/</loc>
 <lastmod>${
-      date.toISOString().split('T')[0].replace("/", "-").replace("/", "-")
+      date.toISOString().split("T")[0].replace("/", "-").replace("/", "-")
     }</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.8</priority>
@@ -289,7 +294,7 @@ export async function handler(
 <url>
 <loc>https://copied.kavithai.site/tamil-copied-kavithai</loc>
 <lastmod>${
-      date.toISOString().split('T')[0].replace("/", "-").replace("/", "-")
+      date.toISOString().split("T")[0].replace("/", "-").replace("/", "-")
     }</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.8</priority>
@@ -335,9 +340,9 @@ export async function handler(
     return html({
       colorScheme: blogState.theme ?? "auto",
       lang: blogState.lang,
-      title: blogState.title ?? "My Blog",
+      title: blogState.seo_title ?? "Copied Kavithai",
       meta: {
-        "description": blogState.description,
+        "description": blogState.seo_description,
         "og:title": blogState.title,
         "og:description": blogState.description,
         "og:image": blogState.ogImage ?? blogState.cover,
@@ -371,7 +376,7 @@ export async function handler(
       body: (
         <Index
           state={blogState}
-          posts={POSTS}
+          posts={filterPosts(POSTS, searchParams)}
         />
       ),
       headers: {
@@ -556,5 +561,26 @@ export function redirects(redirectMap: Record<string, string>): BlogMiddleware {
     }
 
     return await ctx.next();
+  };
+}
+
+function filterPosts(
+  posts: Map<string, Post>,
+  searchParams: URLSearchParams,
+) {
+  const tag = searchParams.get("tag");
+  if (!tag) {
+    return posts;
+  }
+  return new Map(
+    Array.from(posts.entries()).filter(([, p]) => p.tags?.includes(tag)),
+  );
+}
+
+function recordGetter(data: Record<string, unknown>) {
+  return {
+    get<T>(key: string): T | undefined {
+      return data[key] as T;
+    },
   };
 }
