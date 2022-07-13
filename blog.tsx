@@ -243,6 +243,7 @@ async function loadPost(postsDirectory: string, path: string) {
     // pathname in front matter.
     pathname: data.get("pathname") ?? pathname,
     publishDate: data.get("publish_date")!,
+    updatedDate: data.get("updated_date")!,
     snippet,
     markdown: content,
     coverHtml: data.get("cover_html"),
@@ -463,14 +464,14 @@ function serveRSS(
     ? new URL(state.canonicalUrl)
     : new URL(req.url);
   const origin = url.origin;
-  const copyright = `Copyright ${new Date().getFullYear()} ${origin}`;
+  const copyright = `Copyright ${new Date().getFullYear()} - ${state.title}`;
   const feed = new Feed({
     title: state.title ?? "Blog",
     description: state.description,
-    id: `${origin}/blog`,
-    link: `${origin}/blog`,
+    id: `${origin}/`,
+    link: `${origin}/`,
     language: state.lang,
-    favicon: `${origin}/favicon.ico`,
+    favicon: `https://images.weserv.nl/?url=https://kavithai.tamilsms.blog/wp-content/uploads/2019/07/cropped-Icon-512-32x32.png`,
     copyright: copyright,
     generator: "Feed (https://github.com/jpmonette/feed) for Deno",
     feedLinks: {
@@ -483,7 +484,7 @@ function serveRSS(
       id: `${origin}/${post.title}`,
       title: post.title,
       description: post.snippet,
-      date: post.publishDate,
+      date: post.updatedDate,
       link: `${origin}${post.pathname}`,
       author: post.author?.split(",").map((author: string) => ({
         name: author.trim(),

@@ -28,7 +28,7 @@ export function Index({ state, posts }: IndexProps) {
     postIndex.push(post);
   }
   postIndex.sort(
-    (a, b) => (b.publishDate?.getTime() ?? 0) - (a.publishDate?.getTime() ?? 0),
+    (a, b) => (b.updatedDate?.getTime() ?? 0) - (a.updatedDate?.getTime() ?? 0),
   );
   const schemaHome = `<script type="application/ld+json">
   {
@@ -156,7 +156,7 @@ function PostCard({ post, timezone }: { post: Post; timezone: string }) {
       </h3>
       <p class="text-gray-500/80">
         Last Updated at&nbsp;-&nbsp;<PrettyDate
-          date={post.publishDate}
+          date={post.updatedDate}
           timezone={timezone}
         />
       </p>
@@ -220,7 +220,7 @@ export function PostPage({ post, state }: PostPageProps) {
     )
   }",
         "dateModified": "${
-    post.publishDate.toISOString().split("T")[0].replace("/", "-").replace(
+    post.updatedDate.toISOString().split("T")[0].replace("/", "-").replace(
       "/",
       "-",
     )
@@ -278,7 +278,7 @@ export function PostPage({ post, state }: PostPageProps) {
               <span>By {state.author || post.author} at</span>
             )}&nbsp;-&nbsp;
             <PrettyDate
-              date={post.publishDate}
+              date={post.updatedDate}
               timezone={state.timezone}
             />&nbsp;
             <Tags tags={post.tags} />
