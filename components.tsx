@@ -155,10 +155,15 @@ function PostCard({ post, timezone }: { post: Post; timezone: string }) {
         </a>
       </h3>
       <p class="text-gray-500/80">
-        Last Updated at&nbsp;-&nbsp;<PrettyDate
-          date={post.updatedDate}
-          timezone={timezone}
-        />
+        Last Updated at&nbsp;-&nbsp;<time
+          datetime={post.updatedDate.toISOString().split("T")[0].replace(
+            "/",
+            "-",
+          ).replace("/", "-")}
+        >
+          {post.updatedDate.toISOString().split("T")[0].replace("/", "-")
+            .replace("/", "-")}
+        </time>
       </p>
       <p class="mt-3 text-gray-600 dark:text-gray-400">{post.snippet}</p>
       <p class="mt-3">
@@ -277,10 +282,15 @@ export function PostPage({ post, state }: PostPageProps) {
             {(state.author || post.author) && (
               <span>By {state.author || post.author} at</span>
             )}&nbsp;-&nbsp;
-            <PrettyDate
-              date={post.updatedDate}
-              timezone={state.timezone}
-            />&nbsp;
+            <time
+              datetime={post.updatedDate.toISOString().split("T")[0].replace(
+                "/",
+                "-",
+              ).replace("/", "-")}
+            >
+              {post.updatedDate.toISOString().split("T")[0].replace("/", "-")
+                .replace("/", "-")}
+            </time>&nbsp;
             <Tags tags={post.tags} />
           </p>
           <div
@@ -357,11 +367,6 @@ function Tooltip({ children }: { children: string }) {
       {children}
     </div>
   );
-}
-
-function PrettyDate({ date, timezone }: { date: Date; timezone?: string }) {
-  const formatted = date.toLocaleDateString(timezone ?? "en-US");
-  return <time dateTime={date.toISOString()}>{formatted}</time>;
 }
 
 function Tags({ tags }: { tags?: string[] }) {
